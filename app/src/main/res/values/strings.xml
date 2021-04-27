@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Revelogue</string>
+    <string name="internet_need">Cần có Internet để khởi động ứng dụng.\n Vui lòng thử lại sao!</string>
+    <string name="nointernet">Không có kết nối Internet.\nVui lòng thử lại sao!</string>
+    <string name="title_home">Trang chủ</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_category">Chuyên mục</string>
+    <string name="title_profile">Profile</string>
+    <string name="search">Search</string>
+    <string name="about">About</string>
+    <string name="back">Quay lại</string>
+    <string name="copyright">Copyright © 2021 SUN Studio</string>
+</resources>
