@@ -10,4 +10,8 @@
     <string name="about">About</string>
     <string name="back">Quay lại</string>
     <string name="copyright">Copyright © 2021 SUN Studio</string>
+    <string name="notification_error_ssl_cert_invalid">Chứng chỉ SSL hiện không ổn định, bạn có muốn tiếp tục truy cập không?</string>
+    <string name="continuee">Tiếp tục</string>
+    <string name="cannell">Hủy bỏ</string>
+
 </resources>

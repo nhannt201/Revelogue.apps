@@ -2,9 +2,11 @@ package com.revelogue.client;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +15,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -21,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -70,6 +74,9 @@ public class Home extends AppCompatActivity {
         settings.setAllowFileAccess(true);
         settings.setAppCacheEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        settings.setDomStorageEnabled(true);
+      //  settings.setPluginsEnabled(true);
 
         view.requestFocus();
         settings.setAppCachePath(this.getFilesDir().getAbsolutePath() + "/cache");
@@ -83,6 +90,9 @@ public class Home extends AppCompatActivity {
                 container2.startShimmer();
                 if (isConnected()) {
                     view.loadUrl(url);
+                   // view.loadUrl("javascript:(function(){ var youtube = document.getElementsByTagName('iframe'); for(i=0;i<youtube.length;i++) { if(youtube[i].getAttribute('data-src')) { var x = youtube[i].getAttribute('data-src'); youtube[i].setAttribute('src', x); youtube[i].setAttribute('data-src', ''); } } })()");
+                   // view.loadDataWithBaseURL(null,"<script>var youtube = document.getElementsByTagName(\"iframe\"); for(i=0;i<youtube.length;i++) { if(youtube[i].getAttribute(\"data-src\")) { var x = youtube[i].getAttribute(\"data-src\"); youtube[i].setAttribute(\"src\", x); youtube[i].setAttribute(\"data-src\", \"\"); } }</script>","text/html","utf-8",null);
+
                     img.setImageResource(R.drawable.logo);
                 } else {
                     img.setImageResource(R.drawable.nointernet);
@@ -98,6 +108,14 @@ public class Home extends AppCompatActivity {
                 if (isConnected()) {
                     container2.stopShimmer();
                     container2.setVisibility(View.INVISIBLE);
+                    //Fix bugs video youtube
+                    view.loadDataWithBaseURL("base/url","<h1>loveyouuuuuu</h1>","text/html","utf-8","history/url");
+                    //    view.loadUrl("javascript:(function(){ var youtube = document.getElementsByTagName('iframe'); for(i=0;i<youtube.length;i++) { if(youtube[i].getAttribute('data-src')) { var x = youtube[i].getAttribute('data-src'); youtube[i].setAttribute('src', x); youtube[i].setAttribute('data-src', 'no'); } } })()");
+
+                   // view.loadUrl("javascript:(function(){ alert('Xong!'); })()");
+
+                   // view.loadUrl("javascript:(function(){ var youtube = document.getElementsByTagName('iframe'); for(i=0;i<youtube.length;i++) { if(youtube[i].getAttribute('data-src')) { var x = youtube[i].getAttribute('data-src'); youtube[i].setAttribute('src', x); youtube[i].setAttribute('data-src', 'no'); } } })()");
+
                     // view.setEnabled(true);
                 } else {
                     img.setImageResource(R.drawable.nointernet);
@@ -105,8 +123,28 @@ public class Home extends AppCompatActivity {
                     //  view.setEnabled(false);
                     reload_auto();
                 }
+               // view.loadDataWithBaseURL(null,"<script>var youtube = document.getElementsByTagName(\"iframe\"); for(i=0;i<youtube.length;i++) { if(youtube[i].getAttribute(\"data-src\")) { var x = youtube[i].getAttribute(\"data-src\"); youtube[i].setAttribute(\"src\", x); youtube[i].setAttribute(\"data-src\", \"\"); } }</script>","text/html","utf-8",null);
+
             }
 
+            public void onReceivedSslError(WebView view, final SslErrorHandler handler, SslError error) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(Home.this);
+                builder.setMessage(R.string.notification_error_ssl_cert_invalid);
+                builder.setPositiveButton(R.string.continuee, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        handler.proceed();
+                    }
+                });
+                builder.setNegativeButton(R.string.cannell, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        handler.cancel();
+                    }
+                });
+                final AlertDialog dialog = builder.create();
+                dialog.show();
+            }
 
 
         });
